@@ -18,7 +18,9 @@ model = None
 app = Flask(__name__)
 with open("columns.json", "r") as f:
     columns = json.load(f)["data_columns"]
-model = pickle.load(open('model.pkl', 'rb'))
+    
+with open("model.pkl", "rb") as f:
+    clf = pickle.load(f)
 
 @app.route('/')
 def Home():
@@ -54,7 +56,7 @@ def predict():
     data[area_type_ind] = 1
     data[location_ind] = 1
     
-    prediction = model.predict([data])
+    prediction = clf.predict([data])
     
     output = round(prediction[0], 2)
     
